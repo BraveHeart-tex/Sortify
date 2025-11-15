@@ -9,9 +9,6 @@ export interface Step {
   description: string // description of what's happening in this step
 }
 
-/**
- * Insertion sort that maintains stable object references for FLIP animations.
- */
 export function* insertionSort(items: Item[]): Generator<Step> {
   const arr = [...items] // shallow copy to avoid mutating original
 
@@ -22,21 +19,21 @@ export function* insertionSort(items: Item[]): Generator<Step> {
   }
 
   for (let i = 1; i < arr.length; i++) {
-    const key = arr[i]
-    if (!key) continue
+    const current = arr[i]
+    if (!current) continue
 
     // highlight the key at its current position
     yield {
       items: [...arr],
-      highlights: [key.id],
-      description: `Selecting element ${key.value} at position ${i}. Now finding its correct position in the sorted portion.`,
+      highlights: [current.id],
+      description: `Selecting element ${current.value} at position ${i}. Now finding its correct position in the sorted portion.`,
     }
 
     let j = i - 1
     const originalPosition = i
 
     // Shift elements to the right by actually removing and reinserting
-    while (j >= 0 && arr[j]!.value > key.value) {
+    while (j >= 0 && arr[j]!.value > current.value) {
       j--
     }
 
@@ -45,19 +42,19 @@ export function* insertionSort(items: Item[]): Generator<Step> {
     // Remove the key from position i
     arr.splice(i, 1)
     // Insert it at the correct position (j + 1)
-    arr.splice(newPosition, 0, key)
+    arr.splice(newPosition, 0, current)
 
     if (newPosition === originalPosition) {
       yield {
         items: [...arr],
-        highlights: [key.id],
-        description: `Element ${key.value} is already in the correct position. No movement needed.`,
+        highlights: [current.id],
+        description: `Element ${current.value} is already in the correct position. No movement needed.`,
       }
     } else {
       yield {
         items: [...arr],
-        highlights: [key.id],
-        description: `Inserted element ${key.value} at position ${newPosition}. Elements ${originalPosition - newPosition} position(s) were shifted right.`,
+        highlights: [current.id],
+        description: `Inserted element ${current.value} at position ${newPosition}. Elements ${originalPosition - newPosition} position(s) were shifted right.`,
       }
     }
   }
