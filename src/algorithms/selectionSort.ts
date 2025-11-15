@@ -19,8 +19,8 @@ export function* selectionSort(items: Item[]): Generator<Step> {
 
     yield {
       items: [...arr],
-      highlights: [arr[i].id],
-      description: `Starting a new pass. Assuming element ${arr[i].value} is the current minimum.`,
+      highlights: [arr[i]!.id],
+      description: `Starting a new pass. Assuming element ${arr[i]!.value} is the current minimum.`,
     }
 
     for (let j = i + 1; j < n; j++) {
@@ -29,17 +29,17 @@ export function* selectionSort(items: Item[]): Generator<Step> {
 
       yield {
         items: [...arr],
-        highlights: [current.id, currentMin.id],
-        description: `Comparing ${current.value} with current minimum ${currentMin.value}.`,
+        highlights: [current!.id, currentMin!.id],
+        description: `Comparing ${current!.value} with current minimum ${currentMin!.value}.`,
       }
 
-      if (current.value < currentMin.value) {
+      if (current!.value < currentMin!.value) {
         minIndex = j
 
         yield {
           items: [...arr],
-          highlights: [arr[minIndex].id],
-          description: `Found a new minimum: ${arr[minIndex].value}.`,
+          highlights: [arr[minIndex]!.id],
+          description: `Found a new minimum: ${arr[minIndex]!.value}.`,
         }
       }
     }
@@ -48,18 +48,18 @@ export function* selectionSort(items: Item[]): Generator<Step> {
       const prev = arr[i]
       const next = arr[minIndex]
 
-      ;[arr[i], arr[minIndex]] = [arr[minIndex], arr[i]]
+      ;[arr[i]!, arr[minIndex]!] = [arr[minIndex]!, arr[i]!]
 
       yield {
         items: [...arr],
-        highlights: [prev.id, next.id],
-        description: `Swapped ${prev.value} with new minimum ${next.value}.`,
+        highlights: [prev!.id, next!.id],
+        description: `Swapped ${prev!.value} with new minimum ${next!.value}.`,
       }
     } else {
       yield {
         items: [...arr],
-        highlights: [arr[i].id],
-        description: `No smaller element found. ${arr[i].value} remains in place.`,
+        highlights: [arr[i]!.id],
+        description: `No smaller element found. ${arr[i]!.value} remains in place.`,
       }
     }
   }
