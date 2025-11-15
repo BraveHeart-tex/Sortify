@@ -10,7 +10,7 @@ import Select from 'primevue/select';
 import { bubbleSort } from "@/algorithms/bubbleSort";
 import { selectionSort } from "@/algorithms/selectionSort";
 import { quickSort } from "@/algorithms/quickSort";
-import { SORTING_ALGORITHMS, sortingAlgorithmOptions, type SortingAlgorithm, type SortingAlgorithmOption } from "@/constants";
+import { sortingAlgorithmOptions, type SortingAlgorithm, type SortingAlgorithmOption } from "@/constants";
 
 const functions: Record<SortingAlgorithm, (items: Item[]) => Generator<Step>> = {
     "insertionSort": insertionSort,
