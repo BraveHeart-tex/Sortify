@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { insertionSort, type Step, type Item } from "@/algorithms/insertionSort";
 import { recordSteps } from "@/algorithms/recordSteps";
 import Card from "primevue/card";
@@ -45,6 +45,14 @@ const maxHeightPx = 240;
 const maxValue = computed(() => Math.max(...current.value.items.map(i => i.value), 1));
 
 const scale = computed(() => maxHeightPx / maxValue.value);
+
+watch(selectedAlgorithm, () => {
+    const isInMiddle = steps.value.length > 0 && index.value < steps.value.length - 1;
+
+    if (isInMiddle) {
+        generateArray();
+    }
+});
 
 function generateArray() {
     generationKey.value++;
@@ -102,8 +110,7 @@ function prevStep() {
 
 <template>
     <Card class="p-4 mx-auto container
-               bg-surface-0 text-surface-900 dark:bg-surface-900 dark:text-surface-0
-               transition-colors duration-300">
+               bg-surface-0 text-surface-900 dark:bg-surface-900 dark:text-surface-0">
 
         <template #content>
             <div class="grid gap-4">
