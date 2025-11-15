@@ -1,5 +1,5 @@
 <template>
-    <header class="border-b transition-colors duration-300
+    <header class="border-b
                bg-surface-0 text-surface-900 border-surface-200
                dark:bg-surface-900 dark:text-surface-0 dark:border-surface-700">
         <div class="container mx-auto px-4 py-4 flex items-center justify-between">
