@@ -3,6 +3,8 @@
 Sortify is an interactive, educational visualization tool built with **Vue 3**, **PrimeVue**, and **Tailwind CSS v4**.
 It allows users to generate arrays, step through sorting algorithms, and observe how different algorithms operate internally—element by element, swap by swap.
 
+<img src="./showcase.webp"/>
+
 The core idea: **Every algorithm yields a sequence of steps**, and each step exposes:
 
 - the state of the array
