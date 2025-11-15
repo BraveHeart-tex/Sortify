@@ -86,54 +86,85 @@ function prevStep() {
 </script>
 
 <template>
-    <Card class="p-4 mx-auto container">
+    <Card class="p-4 mx-auto container
+               bg-surface-0 text-surface-900 dark:bg-surface-900 dark:text-surface-0
+               transition-colors duration-300">
 
         <template #content>
             <div class="grid gap-4">
+
                 <!-- Controls -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 border border-surface-500 rounded-md p-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 rounded-md
+                           border border-surface-300 dark:border-surface-700
+                           bg-surface-0 dark:bg-surface-800">
+
                     <div>
-                        <label class="text-sm font-medium">Array Size</label>
+                        <label class="text-sm font-medium text-surface-700 dark:text-surface-200">
+                            Array Size
+                        </label>
                         <InputNumber v-model="arraySize" :min="3" :max="40" class="w-full" />
                     </div>
+
                     <div>
-                        <label class="text-sm font-medium">Array Values (comma-separated)</label>
+                        <label class="text-sm font-medium text-surface-700 dark:text-surface-200">
+                            Array Values (comma-separated)
+                        </label>
                         <InputText v-model="manualValues" placeholder="e.g. 5,2,4,1" class="w-full" />
                     </div>
+
                     <div>
-                        <label class="text-sm font-medium">Algorithm</label>
+                        <label class="text-sm font-medium text-surface-700 dark:text-surface-200">
+                            Algorithm
+                        </label>
                         <Select :defaultValue="selectedAlgorithm" v-model="selectedAlgorithm" :options="[
                             { label: 'Insertion Sort', value: 'insertionSort' },
                             { label: 'Bubble Sort', value: 'bubbleSort' }
                         ]" optionLabel="label" class="w-full" />
                     </div>
                 </div>
+
                 <!-- Buttons -->
                 <div class="flex gap-3">
                     <Button label="Run" @click="generateArray" :disabled="isRunDisabled" />
 
                     <Button label="Prev" severity="secondary" @click="prevStep" :disabled="index === 0" />
+
                     <Button label="Next" severity="secondary" @click="nextStep"
                         :disabled="index === steps.length - 1 || steps.length === 0" />
+
                     <Button label="Reset" severity="secondary" @click="reset" :disabled="steps.length === 0" />
                 </div>
-                <!-- Step count -->
-                <div class="border rounded-md p-3 border-surface-500">
-                    <p class="text-sm font-semibold mb-1 text-muted-color-emphasis">
+
+                <!-- Step Counter -->
+                <div class="p-3 rounded-md border
+                           border-surface-300 dark:border-surface-700
+                           bg-surface-0 dark:bg-surface-800">
+
+                    <p class="text-sm font-semibold mb-1 text-surface-700 dark:text-surface-200">
                         Step {{ index + 1 }} / {{ totalSteps }}
                     </p>
-                    <p class="text-sm text-muted-color">
+
+                    <p class="text-sm text-surface-600 dark:text-surface-300">
                         {{ current.description || "Generate an array to start" }}
                     </p>
                 </div>
+
                 <!-- Visualization -->
-                <div class="relative h-64 border border-surface-500 p-4 rounded overflow-hidden">
+                <div class="relative h-64 p-4 rounded overflow-hidden
+                           border border-surface-300 dark:border-surface-700
+                           bg-surface-0 dark:bg-surface-800">
+
                     <TransitionGroup :key="generationKey" name="flip" tag="div" class="flex items-end gap-2 h-full">
-                        <div v-for="item in current.items" :key="item.id"
-                            class="relative w-6 flex flex-col items-center justify-end text-xs font-semibold">
-                            <div class="w-full transition-all duration-300 flex items-end justify-center text-white"
-                                :class="current.highlights.includes(item.id) ? 'bg-red-500' : 'bg-blue-500'"
-                                :style="{ height: (item.value * scale) + 'px' }">
+
+                        <div v-for="item in current.items" :key="item.id" class="relative w-6 flex flex-col items-center justify-end
+                                   text-xs font-semibold text-surface-0">
+
+                            <div class="w-full transition-all duration-300 flex items-end justify-center rounded-sm
+                                       text-surface-0" :class="current.highlights.includes(item.id)
+                                        ? 'bg-red-500 dark:bg-red-400'
+                                        : 'bg-primary-700 dark:bg-primary-600'
+                                        " :style="{ height: (item.value * scale) + 'px' }">
+
                                 {{ item.value }}
                             </div>
                         </div>
