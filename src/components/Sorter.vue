@@ -8,6 +8,19 @@ import InputNumber from "primevue/inputnumber";
 import InputText from "primevue/inputtext";
 import Select from 'primevue/select';
 import { bubbleSort } from "@/algorithms/bubbleSort";
+import { selectionSort } from "@/algorithms/selectionSort";
+
+const functions: Record<string, (items: Item[]) => Generator<Step>> = {
+    "insertionSort": insertionSort,
+    "bubbleSort": bubbleSort,
+    "selectionSort": selectionSort
+}
+
+const algorithmOptions = [
+    { label: "Insertion Sort", value: "insertionSort" },
+    { label: "Bubble Sort", value: "bubbleSort" },
+    { label: "Selection Sort", value: "selectionSort" }
+]
 
 const arraySize = ref(10);
 const manualValues = ref("");
@@ -55,8 +68,12 @@ function generateArray() {
     totalSteps.value = 0;
     index.value = 0;
 
+    const selectedFunction = functions[selectedAlgorithm.value.value];
+    if (!selectedFunction) {
+        return;
+    }
 
-    const gen = selectedAlgorithm.value.value === "bubbleSort" ? bubbleSort(items) : insertionSort(items);
+    const gen = selectedFunction(items);
     steps.value = recordSteps(gen);
     totalSteps.value = steps.value.length;
     index.value = 0;
@@ -116,10 +133,8 @@ function prevStep() {
                         <label class="text-sm font-medium text-surface-700 dark:text-surface-200">
                             Algorithm
                         </label>
-                        <Select :defaultValue="selectedAlgorithm" v-model="selectedAlgorithm" :options="[
-                            { label: 'Insertion Sort', value: 'insertionSort' },
-                            { label: 'Bubble Sort', value: 'bubbleSort' }
-                        ]" optionLabel="label" class="w-full" />
+                        <Select :defaultValue="selectedAlgorithm" v-model="selectedAlgorithm"
+                            :options="algorithmOptions" optionLabel="label" class="w-full" />
                     </div>
                 </div>
 
