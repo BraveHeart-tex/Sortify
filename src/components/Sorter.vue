@@ -6,6 +6,8 @@ import Card from "primevue/card";
 import Button from "primevue/button";
 import InputNumber from "primevue/inputnumber";
 import InputText from "primevue/inputtext";
+import Select from 'primevue/select';
+import { bubbleSort } from "@/algorithms/bubbleSort";
 
 const arraySize = ref(10);
 const manualValues = ref("");
@@ -15,18 +17,23 @@ const index = ref(0);
 const totalSteps = ref(0);
 const nextId = (() => { let id = 1; return () => id++; })();
 const generationKey = ref(0);
-
 const current = ref<Step>({
     items: [],
     highlights: [],
     description: "Click 'Run' to create a new array"
 });
+const selectedAlgorithm = ref<{ label: string; value: string }>({ label: "Insertion Sort", value: "insertionSort" });
 
 const isRunDisabled = computed<boolean>(() => {
     const sizeInvalid = !arraySize.value || arraySize.value < 3;
     const valuesInvalid = !manualValues.value || manualValues.value.length < 3;
     return sizeInvalid && valuesInvalid;
 });
+
+const maxHeightPx = 240;
+const maxValue = computed(() => Math.max(...current.value.items.map(i => i.value), 1));
+
+const scale = computed(() => maxHeightPx / maxValue.value);
 
 function generateArray() {
     generationKey.value++;
@@ -49,7 +56,7 @@ function generateArray() {
     index.value = 0;
 
 
-    const gen = insertionSort(current.value.items);
+    const gen = selectedAlgorithm.value.value === "bubbleSort" ? bubbleSort(items) : insertionSort(items);
     steps.value = recordSteps(gen);
     totalSteps.value = steps.value.length;
     index.value = 0;
@@ -80,6 +87,7 @@ function prevStep() {
 
 <template>
     <Card class="p-4 mx-auto container">
+
         <template #content>
             <div class="grid gap-4">
                 <!-- Controls -->
@@ -91,6 +99,13 @@ function prevStep() {
                     <div>
                         <label class="text-sm font-medium">Array Values (comma-separated)</label>
                         <InputText v-model="manualValues" placeholder="e.g. 5,2,4,1" class="w-full" />
+                    </div>
+                    <div>
+                        <label class="text-sm font-medium">Algorithm</label>
+                        <Select :defaultValue="selectedAlgorithm" v-model="selectedAlgorithm" :options="[
+                            { label: 'Insertion Sort', value: 'insertionSort' },
+                            { label: 'Bubble Sort', value: 'bubbleSort' }
+                        ]" optionLabel="label" class="w-full" />
                     </div>
                 </div>
                 <!-- Buttons -->
@@ -118,7 +133,7 @@ function prevStep() {
                             class="relative w-6 flex flex-col items-center justify-end text-xs font-semibold">
                             <div class="w-full transition-all duration-300 flex items-end justify-center text-white"
                                 :class="current.highlights.includes(item.id) ? 'bg-red-500' : 'bg-blue-500'"
-                                :style="{ height: item.value * 4 + 'px' }">
+                                :style="{ height: (item.value * scale) + 'px' }">
                                 {{ item.value }}
                             </div>
                         </div>
