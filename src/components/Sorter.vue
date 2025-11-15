@@ -9,18 +9,15 @@ import InputText from "primevue/inputtext";
 import Select from 'primevue/select';
 import { bubbleSort } from "@/algorithms/bubbleSort";
 import { selectionSort } from "@/algorithms/selectionSort";
+import { quickSort } from "@/algorithms/quickSort";
+import { SORTING_ALGORITHMS, sortingAlgorithmOptions, type SortingAlgorithm, type SortingAlgorithmOption } from "@/constants";
 
-const functions: Record<string, (items: Item[]) => Generator<Step>> = {
+const functions: Record<SortingAlgorithm, (items: Item[]) => Generator<Step>> = {
     "insertionSort": insertionSort,
     "bubbleSort": bubbleSort,
-    "selectionSort": selectionSort
+    "selectionSort": selectionSort,
+    "quickSort": quickSort,
 }
-
-const algorithmOptions = [
-    { label: "Insertion Sort", value: "insertionSort" },
-    { label: "Bubble Sort", value: "bubbleSort" },
-    { label: "Selection Sort", value: "selectionSort" }
-]
 
 const arraySize = ref(10);
 const manualValues = ref("");
@@ -35,7 +32,8 @@ const current = ref<Step>({
     highlights: [],
     description: "Click 'Run' to create a new array"
 });
-const selectedAlgorithm = ref<{ label: string; value: string }>({ label: "Insertion Sort", value: "insertionSort" });
+
+const selectedAlgorithm = ref<SortingAlgorithmOption>({ label: "Insertion Sort", value: "insertionSort" });
 
 const isRunDisabled = computed<boolean>(() => {
     const sizeInvalid = !arraySize.value || arraySize.value < 3;
@@ -134,7 +132,7 @@ function prevStep() {
                             Algorithm
                         </label>
                         <Select :defaultValue="selectedAlgorithm" v-model="selectedAlgorithm"
-                            :options="algorithmOptions" optionLabel="label" class="w-full" />
+                            :options="sortingAlgorithmOptions" optionLabel="label" class="w-full" />
                     </div>
                 </div>
 
