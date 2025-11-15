@@ -1,7 +1,7 @@
 import type { Item, Step } from '@/algorithms/insertionSort'
 
 export function* bubbleSort(items: Item[]): Generator<Step> {
-  const arr = [...items] // shallow copy to avoid mutating original
+  const arr = [...items]
 
   yield {
     items: [...arr],
@@ -10,11 +10,10 @@ export function* bubbleSort(items: Item[]): Generator<Step> {
       'Starting bubble sort. Will repeatedly swap adjacent elements if they are out of order.',
   }
 
-  let n = arr.length
-  let swapped: boolean
+  const n = arr.length
 
   for (let i = 0; i < n - 1; i++) {
-    swapped = false
+    let swapped = false
 
     for (let j = 0; j < n - i - 1; j++) {
       const current = arr[j]
@@ -22,7 +21,6 @@ export function* bubbleSort(items: Item[]): Generator<Step> {
 
       if (!current || !next) continue
 
-      // Highlight the pair being compared
       yield {
         items: [...arr],
         highlights: [current.id, next.id],
@@ -30,14 +28,13 @@ export function* bubbleSort(items: Item[]): Generator<Step> {
       }
 
       if (current.value > next.value) {
-        // Swap the elements
-        ;[arr[j], arr[j + 1]] = [arr[j + 1], arr[j]]
+        ;[arr[j], arr[j + 1]] = [next, current]
         swapped = true
 
         yield {
           items: [...arr],
-          highlights: [arr[j].id, arr[j + 1].id],
-          description: `Swapped element ${arr[j + 1].value} with ${arr[j].value}.`,
+          highlights: [next.id, current.id],
+          description: `Swapped element ${next.value} with ${current.value}.`,
         }
       } else {
         yield {
@@ -58,7 +55,6 @@ export function* bubbleSort(items: Item[]): Generator<Step> {
     }
   }
 
-  // Final sorted state
   yield {
     items: [...arr],
     highlights: [],
