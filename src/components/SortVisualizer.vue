@@ -57,9 +57,9 @@ const maxValue = computed(() => Math.max(...current.value.items.map((i) => i.val
 const scale = computed(() => maxHeightPx / maxValue.value)
 
 watch(selectedAlgorithm, () => {
-  const isInMiddle = steps.value.length > 0 && index.value < steps.value.length - 1
+  const shouldGenerateArray = steps.value.length > 0 && index.value <= steps.value.length - 1
 
-  if (isInMiddle) {
+  if (shouldGenerateArray) {
     generateArray()
   }
 })
