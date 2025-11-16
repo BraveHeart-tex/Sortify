@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import Header from "@/components/Header.vue";
-import Sorter from "@/components/Sorter.vue";
+import AppHeader from '@/components/AppHeader.vue'
+import SortVisualizer from '@/components/SortVisualizer.vue'
 </script>
 
 <template>
-  <Header />
+  <AppHeader />
   <div class="flex items-center flex-col h-screen justify-center">
-    <Sorter />
+    <SortVisualizer />
   </div>
 </template>
